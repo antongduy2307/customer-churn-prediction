@@ -9,6 +9,9 @@ env:
   REGISTRY: ghcr.io
   REF_REPO: antongduy/customer-churn-prediction
   DOCKER_BUILDKIT: 1
+  FEAST_REPO_PATH: /home/antongduy/customer-churn-prediction/data-pipeline/churn_feature_store/churn_features/feature_repo
+  TRAINING_REPO_PATH: /home/antongduy/customer-churn-prediction/model_pipeline
+  SERVING_REPO_PATH: /home/antongduy/customer-churn-prediction/serving_pipeline
 
 jobs:
   feast:
@@ -32,24 +35,24 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run Training
-        working-directory: ./model_pipeline
+        working-directory: /home/antongduy/customer-churn-prediction/model_pipeline
         run: |
           conda run -n churn_mlops_v2 bash ./src/run_sh/train.sh | tee train.log
           RUN_ID=$(grep -oE 'runs/[a-f0-9]+' train.log | head -n1 | cut -d/ -f2)
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
 
       - name: Run Evaluation
-        working-directory: ./model_pipeline
+        working-directory: /home/antongduy/customer-churn-prediction/model_pipeline
         run: |
           conda run -n churn_mlops_v2 bash ./src/run_sh/eval.sh --run-id ${{ env.RUN_ID }}
 
       - name: Register Model
-        working-directory: ./model_pipeline
+        working-directory: /home/antongduy/customer-churn-prediction/model_pipeline
         run: |
           conda run -n churn_mlops_v2 bash ./src/run_sh/register.sh --run-id ${{ env.RUN_ID }}
 
       - name: Promote to Champion
-        working-directory: ./model_pipeline
+        working-directory: /home/antongduy/customer-churn-prediction/model_pipeline
         run: |
           conda run -n churn_mlops_v2 bash ./src/run_sh/promote.sh
 
@@ -81,13 +84,13 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./serving_pipeline
+          context: /home/mlops/Repository/aio2025-mlops-project01/serving_pipeline
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.REF_REPO }}:buildcache
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.REF_REPO }}:buildcache,mode=max
 
       - name: Deploy
-        working-directory: ./serving_pipeline
+        working-directory: /home/mlops/Repository/aio2025-mlops-project01/serving_pipeline
         run: |
           docker compose up -d --force-recreate
