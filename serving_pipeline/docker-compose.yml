@@ -1,0 +1,38 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: churn-prediction-api
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_URI=${MODEL_URI}
+      - MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI}
+      - MLFLOW_S3_ENDPOINT_URL=${MLFLOW_S3_ENDPOINT_URL}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - ./api/data:/app/api/data      # persist production data
+      - ./api/reports:/app/api/reports # persist drift reports
+    restart: unless-stopped
+    networks:
+      - mlops-network
+
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
+    container_name: churn-prediction-ui
+    ports:
+      - "7860:7860"
+    environment:
+      - API_BASE_URL=http://api:8000     # uses Docker service name!
+    depends_on:
+      - api
+    networks:
+      - mlops-network
+
+networks:
+  mlops-network:
+    external: true
