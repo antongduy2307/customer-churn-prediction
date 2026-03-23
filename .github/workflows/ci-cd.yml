@@ -16,11 +16,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Ensure Redis is running
-        run: |
-          sudo service redis-server start
-          # Chờ một vài giây để Redis kịp khởi động
-          sleep 3
       - name: Apply Feast Feature Definitions
         working-directory: /home/antongduy/customer-churn-prediction/data-pipeline/churn_feature_store/churn_features/feature_repo
         run: |
