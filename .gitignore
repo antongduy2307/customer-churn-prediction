@@ -13,6 +13,7 @@ env/
 
 # ── Jupyter ──
 .ipynb_checkpoints/
+.ipynb
 
 # ── Environment ──
 .env
@@ -56,4 +57,4 @@ logs/
 
 Miniconda3-latest-Linux-x86_64.sh
 run_id.txt
-train_test_split.py
+/data-pipeline/churn_feature_store/churn_features/feature_repo/*.ipynb
