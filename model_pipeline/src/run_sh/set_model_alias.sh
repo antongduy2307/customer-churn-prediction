@@ -37,8 +37,8 @@ export PYTHONPATH="$PROJECT_ROOT"
 PYTHON_SCRIPT="$PROJECT_ROOT/src/scripts/register_model.py"
 CONFIG_PATH="$PROJECT_ROOT/src/config/logistic_regression.yaml"
 
-MODEL_NAME="test_logistic_regression_v1.1"
-VERSION="5"
+MODEL_NAME="customer_churn_model_v2"
+VERSION="2"
 ALIAS="staging"
 
 # =====================

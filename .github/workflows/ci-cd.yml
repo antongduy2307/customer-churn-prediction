@@ -84,13 +84,13 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: /home/mlops/Repository/aio2025-mlops-project01/serving_pipeline
+          context: /home/antongduy/customer-churn-prediction/serving_pipeline 
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.REF_REPO }}:buildcache
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.REF_REPO }}:buildcache,mode=max
 
       - name: Deploy
-        working-directory: /home/mlops/Repository/aio2025-mlops-project01/serving_pipeline
+        working-directory: /home/antongduy/customer-churn-prediction/serving_pipeline
         run: |
           docker compose up -d --force-recreate

@@ -23,7 +23,7 @@ usage() {
 # Defaults
 # =====================
 RUN_ID=""
-MODEL_NAME="test_logistic_regression_v1.1"
+MODEL_NAME="customer_churn_model_v2"
 DESCRIPTION="Logistic Regression model for customer churn prediction"
 
 # =====================
