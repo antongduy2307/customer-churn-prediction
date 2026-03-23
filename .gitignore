@@ -54,3 +54,5 @@ Thumbs.db
 *.log
 logs/
 
+Miniconda3-latest-Linux-x86_64.sh
+run_id.txt

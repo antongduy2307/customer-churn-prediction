@@ -1,0 +1,13 @@
+name: UI Docker Build
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:                          # ← only triggers for UI file changes
+      - 'serving_pipeline/ui.py'
+      - 'serving_pipeline/Dockerfile.ui'
+      - 'serving_pipeline/requirements.txt'
+  pull_request:
+    paths:
+      - 'serving_pipeline/ui.py'
+      - 'serving_pipeline/Dockerfile.ui'

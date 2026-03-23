@@ -9,4 +9,5 @@ End-to-end MLOps pipeline for customer churn prediction.
 - **Infrastructure**: Docker + Kubernetes
 
 ## Author
-antongduy
+antongduy/customer-churn-prediction
+
