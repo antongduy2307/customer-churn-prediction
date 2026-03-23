@@ -19,11 +19,11 @@ jobs:
       - name: Apply Feast Feature Definitions
         working-directory: ./data-pipeline/churn_feature_store/churn_features/feature_repo
         run: |
-          conda run -n churn_mlops feast apply
+          conda run -n churn_mlops_v2 feast apply
       - name: Materialize Feast Features
         working-directory: ./data-pipeline/churn_feature_store/churn_features/feature_repo
         run: |
-          conda run -n churn_mlops feast materialize-incremental $(date -u +"%Y-%m-%dT%H:%M:%S")
+          conda run -n churn_mlops_v2 feast materialize-incremental $(date -u +"%Y-%m-%dT%H:%M:%S")
 
   training:
     runs-on: [self-hosted, linux]
@@ -34,24 +34,24 @@ jobs:
       - name: Run Training
         working-directory: ./model_pipeline
         run: |
-          conda run -n churn_mlops bash ./src/run_sh/train.sh | tee train.log
+          conda run -n churn_mlops_v2 bash ./src/run_sh/train.sh | tee train.log
           RUN_ID=$(grep -oE 'runs/[a-f0-9]+' train.log | head -n1 | cut -d/ -f2)
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
 
       - name: Run Evaluation
         working-directory: ./model_pipeline
         run: |
-          conda run -n churn_mlops bash ./src/run_sh/eval.sh --run-id ${{ env.RUN_ID }}
+          conda run -n churn_mlops_v2 bash ./src/run_sh/eval.sh --run-id ${{ env.RUN_ID }}
 
       - name: Register Model
         working-directory: ./model_pipeline
         run: |
-          conda run -n churn_mlops bash ./src/run_sh/register.sh --run-id ${{ env.RUN_ID }}
+          conda run -n churn_mlops_v2 bash ./src/run_sh/register.sh --run-id ${{ env.RUN_ID }}
 
       - name: Promote to Champion
         working-directory: ./model_pipeline
         run: |
-          conda run -n churn_mlops bash ./src/run_sh/promote.sh
+          conda run -n churn_mlops_v2 bash ./src/run_sh/promote.sh
 
   serving:
     runs-on: [self-hosted, linux]
