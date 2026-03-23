@@ -56,3 +56,4 @@ logs/
 
 Miniconda3-latest-Linux-x86_64.sh
 run_id.txt
+train_test_split.py
