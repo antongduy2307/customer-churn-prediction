@@ -1,0 +1,9 @@
+mlflow==3.5.0
+scikit-learn
+pandas
+numpy
+loguru
+pyyaml
+boto3
+pyarrow
+python-dotenv
